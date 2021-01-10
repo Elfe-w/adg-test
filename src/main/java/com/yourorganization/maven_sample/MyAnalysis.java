@@ -80,6 +80,14 @@ public class MyAnalysis {
 	private static Map<Integer,String> tagInfo;
 	private static Map<Integer,String> nMethodInfo;
 	
+	
+	
+	private static String methodInfoFile="E:/test/SignalResultsTest.csv";//上一个文件产生的函数签名信息
+	private static String dataSrc="E:/dataSrcTest";//数据集的位置
+	private static String jarSrc="E:/src_temp";//所需要jar包的位置
+	private static String reasultPath="E:/outputTest/";//输出结果的路径
+	private static String methodCallFile="E:/test/MethodCall.csv";//存放提取到的函数调用信息的路径
+	
 	//用一个related的map记录下所有出现的ID，key等于原来的ID然后，value等于新的ID根据新的ID序号进行编码
 	/*
 	 * 所以所有的准备工作都是为了最后建立一个图
@@ -126,7 +134,7 @@ public class MyAnalysis {
 	        // FileWriter(File file, boolean append)，append为true时为追加模式，false或缺省则为覆盖模式
 	        writer = new FileWriter(checkFile, false);
 	       for(Map.Entry<Integer, Integer>entry:onID.entrySet()){
-		       writer.append(entry.getKey()+":"+"\n"+entry.getValue());
+		       writer.append(entry.getKey()+":"+entry.getValue()+"\n");
 //		       if(methodCallInfo.get(entry.getKey()).equals(nMethodInfo.get(entry.getValue()))){
 //		    	   writer.append("YES\n");
 //		       }
@@ -248,7 +256,7 @@ public class MyAnalysis {
 
 	public static void readFile(){
 		
-		File csv=new File("E:/test/SignalResultsTest.csv");
+		File csv=new File(methodInfoFile);
 		BufferedReader br=null;
 		try{
 			br=new BufferedReader(new FileReader(csv));
@@ -426,13 +434,13 @@ public class MyAnalysis {
 
     public static void main(String[] args) throws IOException {
     	PrintWriter printWriter;
-    	printWriter = new PrintWriter(new File("E:/test/MethodCall.csv"));
+    	printWriter = new PrintWriter(new File(methodCallFile));
     	
-    	Path src=Paths.get("E:/dataSrcTest");
+    	Path src=Paths.get(dataSrc);
     	//Path src=Paths.get("E:/00-data/00-javadataset/java-small/java-small/test/hadoop");
     	//Path src=Paths.get("E:/dataSet/Java-master");
     	//Path src=Paths.get("E:/JavaParser-Tool-master");
-    	Path jar_src=Paths.get("E:/src_temp");
+    	Path jar_src=Paths.get(jarSrc);
  //   	Path src=Paths.get("E:/javaparser-master");
 //    	Path jar1=Paths.get("E:/dataSet/JAVADataset-master/JAVADataset-master/lib/JNIPort30.jar");
 //    	Path jar2=Paths.get("E:/dataSet/JAVADataset-master/JAVADataset-master/lib/ch/akuhn/fame/1.1/fame-1.1.jar");
@@ -475,7 +483,7 @@ public class MyAnalysis {
         // We're done with printWriter!
         printWriter.close();
         logger.info("i saved.......");
-        String filePath="E:/outputTest";
+        String filePath=reasultPath;
       readFile();
       getMethodID();
       getEdgeInfo();
